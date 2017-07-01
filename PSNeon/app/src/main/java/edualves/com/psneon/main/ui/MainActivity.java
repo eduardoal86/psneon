@@ -1,5 +1,6 @@
 package edualves.com.psneon.main.ui;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,7 @@ import edualves.com.psneon.R;
 import edualves.com.psneon.main.presenter.MainPresenter;
 import edualves.com.psneon.service.Service;
 
-public class MainActivity extends BaseApp implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -36,11 +37,14 @@ public class MainActivity extends BaseApp implements MainView {
     @Inject
     Service service;
 
+    @Inject
+    SharedPreferences prefs;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getDeps().inject(this);
+        ((BaseApp) getApplication()).getDeps().inject(this);
 
         presenter = new MainPresenter(service, this);
 
@@ -68,6 +72,7 @@ public class MainActivity extends BaseApp implements MainView {
     @Override
     public void getTokenSuccess(String token) {
         Log.d(LOG_TAG, "Token:" + token);
+        prefs.edit().putString("token", token).apply();
     }
 
     @Override
