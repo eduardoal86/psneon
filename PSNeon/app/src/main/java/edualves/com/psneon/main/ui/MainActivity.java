@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initProfileInfo() {
         Glide.with(this)
-                .load("http://i.imgur.com/DvpvklR.png")
+                .load("https://avatars0.githubusercontent.com/u/8269594?v=3&s=400")
                 .into(userPhoto);
         userName.setText(getString(R.string.user_name));
         userEmail.setText(getString(R.string.user_email));

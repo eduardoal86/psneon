@@ -34,7 +34,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
 
     //Dagger2
-    compile 'com.google.dagger:dagger:2.10'
+    compile 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
     //Butterknife dependency
     compile 'com.jakewharton:butterknife:8.6.0'
@@ -44,6 +45,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
 
     //CircleImageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
