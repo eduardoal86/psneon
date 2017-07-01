@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
@@ -46,7 +47,23 @@ public class NetworkModule {
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
+    }
+
+    @Provides
+    @Singleton
+    @SuppressWarnings("unused")
+    public NetworkService providesNetworkService(
+            Retrofit retrofit) {
+        return retrofit.create(NetworkService.class);
+    }
+    @Provides
+    @Singleton
+    @SuppressWarnings("unused")
+    public Service providesService(
+            NetworkService networkService) {
+        return new Service(networkService);
     }
 }
