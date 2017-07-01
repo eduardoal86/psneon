@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PSNeon</string>
+    <string name="send_cash_title_btn">ENVIAR DINHEIRO</string>
+    <string name="history_sent_btn_title">HISTÓRICO DE ENVIOS</string>
+    <string name="user_name">Eduardo Alves</string>
+    <string name="user_email">eduardoal86@gmail.com</string>
 </resources>
