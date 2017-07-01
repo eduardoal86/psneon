@@ -1,11 +1,12 @@
 package edualves.com.psneon;
 
 import android.app.Application;
-import edualves.com.psneon.deps.DaggerDeps;
-import edualves.com.psneon.deps.Deps;
+
+import edualves.com.psneon.components.AppComponent;
+import edualves.com.psneon.components.DaggerAppComponent;
 import edualves.com.psneon.modules.AppModule;
 import edualves.com.psneon.modules.PrefsModule;
-import edualves.com.psneon.service.NetworkModule;
+import edualves.com.psneon.modules.NetworkModule;
 
 /**
  * Created by edualves on 30/06/17.
@@ -13,20 +14,20 @@ import edualves.com.psneon.service.NetworkModule;
 
 public class BaseApp extends Application {
 
-    Deps deps;
+    AppComponent appComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        deps = DaggerDeps.builder()
+        appComponent = DaggerAppComponent.builder()
                 .networkModule(new NetworkModule())
                 .prefsModule(new PrefsModule())
                 .appModule(new AppModule(this))
                 .build();
     }
 
-    public Deps getDeps() {
-        return deps;
+    public AppComponent getAppComponent() {
+        return appComponent;
     }
 }

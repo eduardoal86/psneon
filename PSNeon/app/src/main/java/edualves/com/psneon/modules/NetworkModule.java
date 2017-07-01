@@ -1,4 +1,4 @@
-package edualves.com.psneon.service;
+package edualves.com.psneon.modules;
 
 import java.io.IOException;
 
@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import edualves.com.psneon.service.NetworkService;
+import edualves.com.psneon.service.Service;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

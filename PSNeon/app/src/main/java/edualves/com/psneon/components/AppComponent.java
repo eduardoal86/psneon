@@ -1,4 +1,4 @@
-package edualves.com.psneon.deps;
+package edualves.com.psneon.components;
 
 import javax.inject.Singleton;
 
@@ -6,7 +6,7 @@ import dagger.Component;
 import edualves.com.psneon.main.ui.MainActivity;
 import edualves.com.psneon.modules.AppModule;
 import edualves.com.psneon.modules.PrefsModule;
-import edualves.com.psneon.service.NetworkModule;
+import edualves.com.psneon.modules.NetworkModule;
 
 /**
  * Created by edualves on 30/06/17.
@@ -14,7 +14,7 @@ import edualves.com.psneon.service.NetworkModule;
 
 @Singleton
 @Component(modules = {NetworkModule.class, AppModule.class, PrefsModule.class})
-public interface Deps {
+public interface AppComponent {
 
     void inject(MainActivity mainActivity);
 }

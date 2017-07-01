@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((BaseApp) getApplication()).getDeps().inject(this);
+        ((BaseApp) getApplication()).getAppComponent().inject(this);
 
         presenter = new MainPresenter(service, this);
 
@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 .into(userPhoto);
         userName.setText(getString(R.string.user_name));
         userEmail.setText(getString(R.string.user_email));
-
 
     }
 
