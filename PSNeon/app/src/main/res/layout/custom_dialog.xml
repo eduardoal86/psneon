@@ -65,10 +65,10 @@
                 android:layout_below="@+id/phone_dialog"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:text="@string/cash_to_sent_title"
                 android:textAlignment="center"
                 android:textColor="@color/regular_white"
-                android:textSize="14sp"
-                tools:text="Valor a enviar:" />
+                android:textSize="14sp" />
 
             <RelativeLayout
                 android:id="@+id/container_send"
@@ -85,6 +85,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/edittext_shape_white"
+                    android:inputType="number"
+                    android:maxLength="15"
                     android:textAlignment="center"
                     android:textColor="@color/light_blue"
                     android:textSize="18sp"

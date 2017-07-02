@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -58,7 +61,7 @@ public class CustomDialog extends DialogFragment {
         String positiveButtonTitle = bundle.getString("positiveButtonTitle");
         String name = bundle.getString("name");
         String phone = bundle.getString("phone");
-        int drawable = bundle.getInt("imageRes");
+        String imagePath = bundle.getString("imageRes");
 
         btnPositive.setText(positiveButtonTitle);
 
@@ -75,7 +78,11 @@ public class CustomDialog extends DialogFragment {
 
         phoneDialog.setText(phone);
 
-        photoDialog.setImageResource(drawable);
+        Glide.with(getActivity())
+                .load(imagePath)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(android.R.drawable.star_on)
+                .into(photoDialog);
 
         builder.setView(view);
         return builder.create();
@@ -105,7 +112,7 @@ public class CustomDialog extends DialogFragment {
         private String nameDialog;
         private String positiveButtonTitle;
         private String phoneDialog;
-        private int imageRes;
+        private String imageRes;
         private View.OnClickListener positiveClickListener;
         private View.OnClickListener closeClickListener;
 
@@ -125,7 +132,7 @@ public class CustomDialog extends DialogFragment {
             return this;
         }
 
-        public Builder withImageRes(final int imageRes) {
+        public Builder withImageRes(String imageRes) {
             this.imageRes = imageRes;
             return this;
         }
@@ -146,7 +153,7 @@ public class CustomDialog extends DialogFragment {
             Bundle args = new Bundle();
             args.putString("positiveButtonTitle", positiveButtonTitle);
             args.putString("phone", phoneDialog);
-            args.putInt("imageRes", imageRes);
+            args.putString("imageRes", imageRes);
             args.putString("name", nameDialog);
             dialog.setArguments(args);
 
