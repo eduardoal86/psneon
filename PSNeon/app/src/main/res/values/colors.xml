@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="light_blue">#10a3c1</color>
     <color name="regular_white">#fff</color>
+    <color name="font_color_blue">#54F7E7</color>
+    <color name="dialog_background">#176D83</color>
 </resources>

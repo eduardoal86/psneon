@@ -1,5 +1,6 @@
 package edualves.com.psneon.main.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,9 +14,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import edualves.com.psneon.BaseApp;
 import edualves.com.psneon.R;
+import edualves.com.psneon.contacts.ui.ContactActivity;
 import edualves.com.psneon.main.presenter.MainPresenter;
 import edualves.com.psneon.service.Service;
 
@@ -66,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         userName.setText(getString(R.string.user_name));
         userEmail.setText(getString(R.string.user_email));
 
+    }
+
+    @OnClick(R.id.send_cash)
+    void sendCash() {
+        Intent intent = new Intent(this, ContactActivity.class);
+        startActivity(intent);
     }
 
     @Override
