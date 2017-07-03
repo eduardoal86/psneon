@@ -35,12 +35,13 @@ public class HistoryPresenter {
 
             @Override
             public void onError(Throwable e) {
-
+                view.displayErrorMessageLoadList(e.getMessage());
             }
 
             @Override
             public void onNext(List<TransferResponse> transferResponseList) {
                 //TODO call activity through view
+                view.populateTransferList(transferResponseList);
             }
         });
 

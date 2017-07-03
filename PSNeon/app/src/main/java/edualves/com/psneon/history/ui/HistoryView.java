@@ -11,4 +11,6 @@ import edualves.com.psneon.model.TransferResponse;
 public interface HistoryView {
 
     void populateTransferList(List<TransferResponse> transferResponses);
+
+    void displayErrorMessageLoadList(String message);
 }

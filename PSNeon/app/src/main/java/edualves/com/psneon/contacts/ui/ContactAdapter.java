@@ -38,9 +38,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.contact_list_item_view, parent, false);
-        /*view.setLayoutParams(
-                new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
-                        RecyclerView.LayoutParams.MATCH_PARENT));*/
         return new ViewHolder(view);
     }
 

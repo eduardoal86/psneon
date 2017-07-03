@@ -2,40 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="90dp"
     tools:background="@drawable/gradient_background">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/contact_photo"
+        android:id="@+id/transfer_photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
         android:layout_centerVertical="true"
         tools:src="@android:drawable/btn_star" />
 
     <RelativeLayout
-        android:id="@+id/name_phone_container"
+        android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/contact_photo">
+        android:layout_toRightOf="@+id/transfer_photo">
 
         <TextView
-            android:id="@+id/contact_name"
+            android:id="@+id/transfer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/font_color_blue"
             tools:text="Fabiana Casca Grossa da Santa\nMaria de Lourdes" />
 
         <TextView
-            android:id="@+id/contact_phone"
+            android:id="@+id/transfer_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_below="@+id/transfer_name"
+            android:textColor="@color/font_color_dark_blue"
+            tools:text="(11)985313562" />
+
+        <TextView
+            android:id="@+id/transfer_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:layout_below="@+id/contact_name"
+            android:layout_below="@+id/transfer_phone"
             android:textColor="@color/font_color_dark_blue"
-            tools:text="(11)985313562" />
+            tools:text="R$ 31,60" />
 
     </RelativeLayout>
 
