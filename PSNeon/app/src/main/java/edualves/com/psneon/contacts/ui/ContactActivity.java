@@ -130,7 +130,6 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
 
     @Override
     public void onFinishSendCash(String inputCash) {
-        Log.d("Dialog", "Contact cash sent: " + inputCash);
         transferCommand.setValue(Double.valueOf(inputCash));
         presenter.transferMoney(transferCommand);
     }
