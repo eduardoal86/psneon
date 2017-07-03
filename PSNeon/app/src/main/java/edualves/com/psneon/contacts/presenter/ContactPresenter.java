@@ -11,7 +11,10 @@ import java.util.List;
 
 import edualves.com.psneon.contacts.ui.ContactView;
 import edualves.com.psneon.model.ContactInfoResponse;
+import edualves.com.psneon.model.TransferCommand;
 import edualves.com.psneon.service.Service;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by edualves on 01/07/17.
@@ -47,6 +50,34 @@ public class ContactPresenter {
             e.printStackTrace();
             return null;
         }
+
+    }
+
+    public void transferMoney(Integer id, String token, Double value) {
+
+        TransferCommand transferCommand = new TransferCommand();
+        transferCommand.setId(id);
+        transferCommand.setToken(token);
+        transferCommand.setValue(value);
+
+        Observable subcription = service.sendMoney(transferCommand);
+
+        subcription.subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.displayErrorTransferMessage(e.getMessage());
+            }
+
+            @Override
+            public void onNext(Boolean statusTransfer) {
+                view.displaySuccessTransferMessage();
+            }
+        });
 
     }
 

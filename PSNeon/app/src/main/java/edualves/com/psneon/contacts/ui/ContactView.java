@@ -5,4 +5,8 @@ package edualves.com.psneon.contacts.ui;
  */
 
 public interface ContactView {
+
+    void displaySuccessTransferMessage();
+
+    void displayErrorTransferMessage(String message);
 }
