@@ -1,5 +1,7 @@
 package edualves.com.psneon.service;
 
+import edualves.com.psneon.model.TransferCommand;
+import retrofit2.http.Body;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -31,4 +33,16 @@ public class Service {
                      });
     }
 
+    public Observable<Boolean> sendMoney(TransferCommand transferCommand) {
+
+        return service.sendMoney(transferCommand)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext(new Func1<Throwable, Observable<? extends Boolean>>() {
+                    @Override
+                    public Observable<? extends Boolean> call(Throwable throwable) {
+                        return Observable.error(throwable);
+                    }
+                });
+    }
 }
