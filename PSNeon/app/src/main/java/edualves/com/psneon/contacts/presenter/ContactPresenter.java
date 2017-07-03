@@ -53,12 +53,7 @@ public class ContactPresenter {
 
     }
 
-    public void transferMoney(Integer id, String token, Double value) {
-
-        TransferCommand transferCommand = new TransferCommand();
-        transferCommand.setId(id);
-        transferCommand.setToken(token);
-        transferCommand.setValue(value);
+    public void transferMoney(TransferCommand transferCommand) {
 
         Observable subcription = service.sendMoney(transferCommand);
 

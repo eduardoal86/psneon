@@ -1,10 +1,12 @@
 package edualves.com.psneon.contacts.ui.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -48,6 +50,8 @@ public class CustomDialog extends DialogFragment {
     private View.OnClickListener positiveClickListener;
     private View.OnClickListener closeDialogClickListener;
 
+    private EditTextDialogListener dialogListener;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -86,6 +90,32 @@ public class CustomDialog extends DialogFragment {
 
         builder.setView(view);
         return builder.create();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.dialogListener = (EditTextDialogListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        this.dialogListener = null;
+        super.onDetach();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        btnPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogListener.onFinishSendCash(editTextCash.getText().toString());
+                dismiss();
+            }
+        });
+
     }
 
     @Override
@@ -162,6 +192,10 @@ public class CustomDialog extends DialogFragment {
 
             return dialog;
         }
+    }
+
+    public interface EditTextDialogListener {
+        void onFinishSendCash(String inputCash);
     }
 
 }
