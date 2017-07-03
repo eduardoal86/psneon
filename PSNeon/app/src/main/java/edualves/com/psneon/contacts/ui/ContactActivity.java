@@ -1,16 +1,12 @@
 package edualves.com.psneon.contacts.ui;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -22,16 +18,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import edualves.com.psneon.BaseApp;
 import edualves.com.psneon.R;
 import edualves.com.psneon.contacts.presenter.ContactPresenter;
 import edualves.com.psneon.contacts.ui.dialog.CustomDialog;
 import edualves.com.psneon.model.ContactInfoResponse;
+import edualves.com.psneon.model.TransferCommand;
 import edualves.com.psneon.service.Service;
 import edualves.com.psneon.utils.Utils;
 
-public class ContactActivity extends AppCompatActivity implements ContactView {
+public class ContactActivity extends AppCompatActivity implements ContactView, CustomDialog.EditTextDialogListener {
 
     private static final String LOG_TAG = ContactActivity.class.getSimpleName();
 
@@ -51,6 +47,8 @@ public class ContactActivity extends AppCompatActivity implements ContactView {
     List<ContactInfoResponse> contactList = new ArrayList<>();
 
     CustomDialog cashDialog;
+
+    TransferCommand transferCommand = new TransferCommand();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +79,20 @@ public class ContactActivity extends AppCompatActivity implements ContactView {
                 new ContactAdapter.OnItemClickListener() {
                     @Override
                     public void onClick(final ContactInfoResponse contactItem) {
-
                         ContactActivity.downloadPhoto(ContactActivity.this, contactItem.getUrl());
+                        openDialog(contactItem);
+                    }
+                });
+        recyclerList.setAdapter(adapter);
 
-                        cashDialog = new CustomDialog.Builder()
+    }
+
+    private void openDialog(ContactInfoResponse contactItem) {
+
+        transferCommand.setId(contactItem.getId());
+        transferCommand.setToken(prefs.getString("token", null));
+
+        cashDialog = new CustomDialog.Builder()
                                 .withNameDialog(contactItem.getName())
                                 .withPhoneDialog(contactItem.getPhone())
                                 .withImageRes(contactItem.getUrl())
@@ -95,23 +103,8 @@ public class ContactActivity extends AppCompatActivity implements ContactView {
                                         cashDialog.dismiss();
                                     }
                                 })
-                                .withPositiveClickListener(new View.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(View v) {
-//                                        presenter.transferMoney(contactItem.getId(),
-//                                                prefs.getString("token", null),
-//                                                Double.valueOf(editText.getText().toString()));
-
-                                        cashDialog.dismiss();
-                                    }
-                                })
                                 .build();
                         cashDialog.show(getSupportFragmentManager(), "dialog");
-
-                    }
-                });
-        recyclerList.setAdapter(adapter);
 
     }
 
@@ -133,5 +126,12 @@ public class ContactActivity extends AppCompatActivity implements ContactView {
         Toast.makeText(ContactActivity.this,
                 "Ops! Tente novamente mais tarde.",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFinishSendCash(String inputCash) {
+        Log.d("Dialog", "Contact cash sent: " + inputCash);
+        transferCommand.setValue(Double.valueOf(inputCash));
+        presenter.transferMoney(transferCommand);
     }
 }

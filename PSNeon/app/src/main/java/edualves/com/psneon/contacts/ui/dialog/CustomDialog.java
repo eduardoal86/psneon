@@ -1,13 +1,17 @@
 package edualves.com.psneon.contacts.ui.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import edualves.com.psneon.R;
+import edualves.com.psneon.contacts.ui.DialogView;
 
 /**
  * Created by edualves on 02/07/17.
@@ -47,6 +52,8 @@ public class CustomDialog extends DialogFragment {
 
     private View.OnClickListener positiveClickListener;
     private View.OnClickListener closeDialogClickListener;
+
+    private EditTextDialogListener dialogListener;
 
     @NonNull
     @Override
@@ -86,6 +93,33 @@ public class CustomDialog extends DialogFragment {
 
         builder.setView(view);
         return builder.create();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.dialogListener = (EditTextDialogListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        this.dialogListener = null;
+        super.onDetach();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        btnPositive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Dialog", "Cash " + editTextCash.getText().toString());
+                dialogListener.onFinishSendCash(editTextCash.getText().toString());
+                dismiss();
+            }
+        });
+
     }
 
     @Override
@@ -162,6 +196,10 @@ public class CustomDialog extends DialogFragment {
 
             return dialog;
         }
+    }
+
+    public interface EditTextDialogListener {
+        void onFinishSendCash(String inputCash);
     }
 
 }
