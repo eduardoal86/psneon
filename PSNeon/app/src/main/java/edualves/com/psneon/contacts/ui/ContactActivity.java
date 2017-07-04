@@ -2,11 +2,14 @@ package edualves.com.psneon.contacts.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +37,9 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
     @BindView(R.id.recycler_contact)
     RecyclerView recyclerList;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     ContactAdapter adapter;
 
     ContactPresenter presenter;
@@ -43,6 +49,8 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
 
     @Inject
     SharedPreferences prefs;
+
+    private TextView toolbarTitle;
 
     List<ContactInfoResponse> contactList = new ArrayList<>();
 
@@ -55,13 +63,33 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
+        //getSupportActionBar().setTitle(R.string.send_money_title);
+
         ((BaseApp) getApplication()).getAppComponent().inject(this);
 
         ButterKnife.bind(this);
 
+        configureToolbar();
         configList();
         displayContactList();
 
+    }
+
+    private void configureToolbar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(R.string.send_money_title);
+        toolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.regular_white));
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void configList() {

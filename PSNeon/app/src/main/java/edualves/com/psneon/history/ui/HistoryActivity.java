@@ -3,10 +3,14 @@ package edualves.com.psneon.history.ui;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -52,6 +56,11 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     @Inject
     SharedPreferences prefs;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    private TextView toolbarTitle;
+
     HistoryPresenter presenter;
 
     HistoryAdapter adapter;
@@ -71,10 +80,29 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
         ButterKnife.bind(this);
 
+        configureToolbar();
+
         //TODO display wait before these methods
         configListTransfer();
         setupListContacts();
         setupListTransfers();
+    }
+
+    private void configureToolbar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(R.string.history_money_sent);
+        toolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.regular_white));
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void setupListContacts() {

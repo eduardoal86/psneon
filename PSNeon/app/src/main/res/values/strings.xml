@@ -6,4 +6,6 @@
     <string name="user_email">eduardoal86@gmail.com</string>
     <string name="send_cash_btn">ENVIAR</string>
     <string name="cash_to_sent_title">Valor a enviar:</string>
+    <string name="send_money_title">ENVIAR DINHEIRO</string>
+    <string name="history_money_sent">HISTÓRICO DE ENVIOS</string>
 </resources>
