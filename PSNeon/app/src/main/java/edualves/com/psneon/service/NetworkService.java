@@ -1,6 +1,9 @@
 package edualves.com.psneon.service;
 
+import java.util.List;
+
 import edualves.com.psneon.model.TransferCommand;
+import edualves.com.psneon.model.TransferResponse;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -19,4 +22,7 @@ public interface NetworkService {
 
     @POST("SendMoney")
     Observable<Boolean> sendMoney(@Body TransferCommand transferCommand);
+
+    @GET("GetTransfers")
+    Observable<List<TransferResponse>> getTransfers(@Query("token") String token);
 }

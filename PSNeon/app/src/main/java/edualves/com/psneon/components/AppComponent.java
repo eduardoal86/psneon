@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import edualves.com.psneon.contacts.ui.ContactActivity;
+import edualves.com.psneon.history.ui.HistoryActivity;
 import edualves.com.psneon.main.ui.MainActivity;
 import edualves.com.psneon.modules.AppModule;
 import edualves.com.psneon.modules.PrefsModule;
@@ -20,4 +21,6 @@ public interface AppComponent {
     void inject(MainActivity mainActivity);
 
     void inject(ContactActivity contactActivity);
+
+    void inject(HistoryActivity historyActivity);
 }

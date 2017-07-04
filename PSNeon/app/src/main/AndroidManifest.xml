@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".contacts.ui.ContactActivity"></activity>
+        <activity android:name=".history.ui.HistoryActivity"></activity>
     </application>
 
 </manifest>
