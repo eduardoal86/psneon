@@ -50,7 +50,6 @@ public class HistoryPresenter {
 
             @Override
             public void onNext(List<TransferResponse> transferResponseList) {
-                //TODO call activity through view
                 view.populateTransferList(transferResponseList);
             }
         });

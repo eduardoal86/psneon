@@ -8,4 +8,7 @@
     <string name="cash_to_sent_title">Valor a enviar:</string>
     <string name="send_money_title">ENVIAR DINHEIRO</string>
     <string name="history_money_sent">HISTÓRICO DE ENVIOS</string>
+    <string name="money_sent_confirmation">Dinheiro enviado!</string>
+    <string name="money_sent_error_message">Ops! Tente novamente mais tarde.</string>
+    <string name="empty_history">Histórico vazio...\nQue tal transferir para\num amigo e voltar depois? ;)</string>
 </resources>

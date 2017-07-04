@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,12 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
     @BindView(R.id.bar_chart)
     BarChart barChart;
+
+    @BindView(R.id.empty_history)
+    RelativeLayout emptyScreen;
+
+    @BindView(R.id.scroll_content)
+    ScrollView scrollContent;
 
     @Inject
     Service service;
@@ -174,10 +182,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
     @Override
     public void populateTransferList(List<TransferResponse> transferResponses) {
-        adapter = new HistoryAdapter(this, transferResponses);
-        adapter.setContactList(contacts);
-        recyclerView.setAdapter(adapter);
-        setupBarChart(contacts, transferResponses);
+        if (transferResponses.size() > 0) {
+            emptyScreen.setVisibility(View.GONE);
+            scrollContent.setVisibility(View.VISIBLE);
+
+            adapter = new HistoryAdapter(this, transferResponses);
+            adapter.setContactList(contacts);
+            recyclerView.setAdapter(adapter);
+            setupBarChart(contacts, transferResponses);
+        }
 
     }
 

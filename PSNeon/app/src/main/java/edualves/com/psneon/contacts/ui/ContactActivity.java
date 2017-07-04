@@ -1,5 +1,6 @@
 package edualves.com.psneon.contacts.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,7 @@ import edualves.com.psneon.BaseApp;
 import edualves.com.psneon.R;
 import edualves.com.psneon.contacts.presenter.ContactPresenter;
 import edualves.com.psneon.contacts.ui.dialog.CustomDialog;
+import edualves.com.psneon.main.ui.MainActivity;
 import edualves.com.psneon.model.ContactInfoResponse;
 import edualves.com.psneon.model.TransferCommand;
 import edualves.com.psneon.service.Service;
@@ -62,8 +64,6 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-
-        //getSupportActionBar().setTitle(R.string.send_money_title);
 
         ((BaseApp) getApplication()).getAppComponent().inject(this);
 
@@ -144,15 +144,17 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
     public void displaySuccessTransferMessage() {
         Log.d(LOG_TAG, "TRANSFER_SUCESS " + prefs.getString("token", null));
         Toast.makeText(ContactActivity.this,
-                "Dinheiro enviado!",
+                R.string.money_sent_confirmation,
                 Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
     public void displayErrorTransferMessage(String message) {
         Log.d(LOG_TAG, "ERROR:" + message);
         Toast.makeText(ContactActivity.this,
-                "Ops! Tente novamente mais tarde.",
+                R.string.money_sent_error_message,
                 Toast.LENGTH_SHORT).show();
     }
 
