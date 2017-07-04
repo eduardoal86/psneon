@@ -84,7 +84,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
     private void setupListTransfers() {
         recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(false);
     }
 
@@ -95,22 +96,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     }
 
     private void setupBarChart(List<ContactInfoResponse> contacts, List<TransferResponse> transfers) {
-        double amountId = 0;
 
-        //TODO Move this 'for' to presenter layer, returning just a map then populate the chart
-        for (int c = 0; c < contacts.size(); c++) {
-            for (int i = 0; i < transfers.size(); i++) {
-                if (contacts.get(c).getId() == transfers.get(i).getClienteId()) {
-                    amountId += transfers.get(i).getValor();
-                }
-            }
-            Log.d("Amount", "Amount by ID: " + contacts.get(c).getId() + " Total: " + amountId);
-            if (amountId > 0) {
-                chartData.put(contacts.get(c), amountId);
-            }
-            amountId = 0;
-        }
-        Log.d("Amount", "Map size " + chartData.size());
+        chartData = presenter.combineDataForChart(contacts, transfers);
 
         addBarEntries(chartData);
 
@@ -127,10 +114,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
         YAxis yAxis = barChart.getAxisLeft();
         yAxis.setDrawLabels(false);
 
-
         BarData barData = new BarData(barDataSet);
         barData.setBarWidth(0.03f);
-
 
         barChart.setData(barData);
         barChart.setFitBars(false);
