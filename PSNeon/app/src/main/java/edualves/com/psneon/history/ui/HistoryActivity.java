@@ -1,6 +1,7 @@
 package edualves.com.psneon.history.ui;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,11 +10,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,10 +115,21 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "");
         barDataSet.setDrawValues(true);
-        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        barDataSet.setValueTextSize(10);
+        barDataSet.setValueTextColor(Color.rgb(48,131,123));
+        barDataSet.setForm(Legend.LegendForm.EMPTY);
+        barDataSet.setColor(Color.rgb(84,247,231));
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setDrawLabels(false);
+
+        YAxis yAxis = barChart.getAxisLeft();
+        yAxis.setDrawLabels(false);
+
 
         BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.05f);
+        barData.setBarWidth(0.03f);
+
 
         barChart.setData(barData);
         barChart.setFitBars(false);
@@ -129,6 +142,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
         barChart.getAxisLeft().setEnabled(true);
         barChart.getXAxis().setDrawAxisLine(false);
         barChart.getXAxis().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawTopYLabelEntry(false);
+        barChart.getAxisLeft().setDrawAxisLine(false);
+
+
 
 
 
