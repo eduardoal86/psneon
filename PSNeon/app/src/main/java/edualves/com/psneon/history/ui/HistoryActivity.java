@@ -5,10 +5,20 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -31,6 +41,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     @BindView(R.id.recycler_transfers)
     RecyclerView recyclerView;
 
+    @BindView(R.id.bar_chart)
+    BarChart barChart;
+
     @Inject
     Service service;
 
@@ -42,6 +55,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     HistoryAdapter adapter;
 
     List<ContactInfoResponse> contacts = new ArrayList<>();
+
+    Map<ContactInfoResponse, Double> chartData = new HashMap<>();
+
+    List<BarEntry> barEntries = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -56,7 +73,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
         configListTransfer();
         setupListContacts();
         setupListTransfers();
-
     }
 
     private void setupListContacts() {
@@ -75,11 +91,67 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
     }
 
+    private void setupBarChart(List<ContactInfoResponse> contacts, List<TransferResponse> transfers) {
+        double amountId = 0;
+
+        //TODO Move this 'for' to presenter layer, returning just a map then populate the chart
+        for (int c = 0; c < contacts.size(); c++) {
+            for (int i = 0; i < transfers.size(); i++) {
+                if (contacts.get(c).getId() == transfers.get(i).getClienteId()) {
+                    amountId += transfers.get(i).getValor();
+                }
+            }
+            Log.d("Amount", "Amount by ID: " + contacts.get(c).getId() + " Total: " + amountId);
+            if (amountId > 0) {
+                chartData.put(contacts.get(c), amountId);
+            }
+            amountId = 0;
+        }
+        Log.d("Amount", "Map size " + chartData.size());
+
+        addBarEntries(chartData);
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "");
+        barDataSet.setDrawValues(true);
+        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+
+        BarData barData = new BarData(barDataSet);
+        barData.setBarWidth(0.05f);
+
+        barChart.setData(barData);
+        barChart.setFitBars(false);
+        barChart.getDescription().setEnabled(false);
+        barChart.setDrawGridBackground(false);
+        barChart.setPinchZoom(false);
+        barChart.setScaleEnabled(false);
+        barChart.setTouchEnabled(false);
+        barChart.getAxisRight().setEnabled(false);
+        barChart.getAxisLeft().setEnabled(true);
+        barChart.getXAxis().setDrawAxisLine(false);
+        barChart.getXAxis().setDrawGridLines(false);
+
+
+
+        barChart.invalidate();
+
+    }
+
+    private void addBarEntries(Map<ContactInfoResponse, Double> chartData) {
+
+        float index = 0;
+        for (Double amount : chartData.values()) {
+            barEntries.add(new BarEntry(index, Double.valueOf(amount).floatValue()));
+            index++;
+        }
+
+    }
+
     @Override
     public void populateTransferList(List<TransferResponse> transferResponses) {
         adapter = new HistoryAdapter(this, transferResponses);
         adapter.setContactList(contacts);
         recyclerView.setAdapter(adapter);
+        setupBarChart(contacts, transferResponses);
 
     }
 
