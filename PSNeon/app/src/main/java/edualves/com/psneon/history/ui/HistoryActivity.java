@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,8 +17,10 @@ import butterknife.ButterKnife;
 import edualves.com.psneon.BaseApp;
 import edualves.com.psneon.R;
 import edualves.com.psneon.history.presenter.HistoryPresenter;
+import edualves.com.psneon.model.ContactInfoResponse;
 import edualves.com.psneon.model.TransferResponse;
 import edualves.com.psneon.service.Service;
+import edualves.com.psneon.utils.Utils;
 
 /**
  * Created by edualves on 03/07/17.
@@ -38,6 +41,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
     HistoryAdapter adapter;
 
+    List<ContactInfoResponse> contacts = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -49,7 +54,13 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
         //TODO display wait before these methods
         configListTransfer();
+        setupListContacts();
         setupListTransfers();
+
+    }
+
+    private void setupListContacts() {
+        contacts = presenter.loadContacts(Utils.readJson(getApplicationContext()));
 
     }
 
@@ -67,6 +78,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     @Override
     public void populateTransferList(List<TransferResponse> transferResponses) {
         adapter = new HistoryAdapter(this, transferResponses);
+        adapter.setContactList(contacts);
         recyclerView.setAdapter(adapter);
 
     }

@@ -1,8 +1,16 @@
 package edualves.com.psneon.history.presenter;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import edualves.com.psneon.history.ui.HistoryView;
+import edualves.com.psneon.model.ContactInfoResponse;
 import edualves.com.psneon.model.TransferResponse;
 import edualves.com.psneon.service.Service;
 import rx.Observable;
@@ -48,4 +56,26 @@ public class HistoryPresenter {
 
     }
 
+    public List<ContactInfoResponse> loadContacts(String json) {
+
+        List<ContactInfoResponse> contactList = new ArrayList<>();
+        Gson gson = new Gson();
+
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray jsonArray = jsonObject.getJSONArray("contacts");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject exploreObject = jsonArray.getJSONObject(i);
+                contactList.add(i, gson.fromJson(exploreObject.toString(), ContactInfoResponse.class));
+            }
+
+            return contactList;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

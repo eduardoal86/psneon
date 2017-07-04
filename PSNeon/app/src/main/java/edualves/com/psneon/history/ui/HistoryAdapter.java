@@ -23,6 +23,7 @@ import edualves.com.psneon.model.TransferResponse;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
     private List<TransferResponse> transferList;
+    private List<ContactInfoResponse> contacts;
     private Context context;
 
     public HistoryAdapter(Context context,
@@ -36,26 +37,38 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.transfer_list_item_view, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final HistoryAdapter.ViewHolder holder, int position) {
 
-        //holder.transferName.setText(transferList.get(position).getName());
-        //holder.transferPhone.setText(transferList.get(position).get);
-        holder.transferValue.setText(transferList.get(position).getValor().toString());
+        for (ContactInfoResponse contactInfo : contacts) {
 
-        /*Glide.with(context)
-                .load(transferList.get(position).getUrl())
-                //.placeholder(android.R.drawable.star_on)
-                .into(holder.contactImage);*/
+            if (transferList.get(position).getClienteId() == contactInfo.getId()) {
+
+                holder.transferName.setText(contactInfo.getName());
+                holder.transferPhone.setText(contactInfo.getPhone());
+
+                Glide.with(context)
+                .load(contactInfo.getUrl())
+                .into(holder.transferImage);
+            }
+
+        }
+
+        holder.transferValue.setText(transferList.get(position).getValor().toString());
 
     }
 
     @Override
     public int getItemCount() {
         return transferList.size();
+    }
+
+    public void setContactList(List<ContactInfoResponse> contacts) {
+        this.contacts = contacts;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,9 +80,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            //transferName = (TextView) itemView.findViewById(R.id.transfer_name);
-            //transferImage = (ImageView) itemView.findViewById(R.id.transfer_photo);
-            //transferPhone = (TextView) itemView.findViewById(R.id.transfer_phone);
+            transferName = (TextView) itemView.findViewById(R.id.transfer_name);
+            transferImage = (ImageView) itemView.findViewById(R.id.transfer_photo);
+            transferPhone = (TextView) itemView.findViewById(R.id.transfer_phone);
             transferValue = (TextView) itemView.findViewById(R.id.transfer_value);
         }
 
