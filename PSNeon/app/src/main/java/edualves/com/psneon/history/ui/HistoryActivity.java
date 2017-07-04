@@ -83,6 +83,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     }
 
     private void setupListTransfers() {
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(false);
     }
@@ -144,11 +145,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
         barChart.getXAxis().setDrawGridLines(false);
         barChart.getAxisLeft().setDrawTopYLabelEntry(false);
         barChart.getAxisLeft().setDrawAxisLine(false);
-
-
-
-
-
         barChart.invalidate();
 
     }
