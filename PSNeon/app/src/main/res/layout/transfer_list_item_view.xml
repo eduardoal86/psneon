@@ -3,14 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:background="@drawable/gradient_background">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/dialog_background" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/transfer_photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        app:civ_border_width="1.5dp"
+        app:civ_border_color="@color/light_blue"
         tools:src="@android:drawable/btn_star" />
 
     <RelativeLayout
@@ -25,26 +37,26 @@
             android:id="@+id/transfer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:textColor="@color/font_color_blue"
+            android:textSize="16sp"
             tools:text="Fabiana Casca Grossa da Santa\nMaria de Lourdes" />
 
         <TextView
             android:id="@+id/transfer_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_below="@+id/transfer_name"
             android:textColor="@color/font_color_dark_blue"
+            android:textSize="16sp"
             tools:text="(11)985313562" />
 
         <TextView
             android:id="@+id/transfer_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
             android:layout_below="@+id/transfer_phone"
             android:textColor="@color/font_color_dark_blue"
+            android:textSize="12sp"
             tools:text="R$ 31,60" />
 
     </RelativeLayout>

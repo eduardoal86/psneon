@@ -34,6 +34,8 @@
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                app:civ_border_width="1.5dp"
+                app:civ_border_color="@color/light_blue"
                 tools:src="@android:drawable/btn_star" />
 
             <TextView
@@ -85,7 +87,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/edittext_shape_white"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:maxLength="15"
                     android:textAlignment="center"
                     android:textColor="@color/light_blue"

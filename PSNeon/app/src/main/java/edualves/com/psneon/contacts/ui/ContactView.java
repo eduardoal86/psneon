@@ -9,4 +9,8 @@ public interface ContactView {
     void displaySuccessTransferMessage();
 
     void displayErrorTransferMessage(String message);
+
+    void showLoading();
+
+    void hideLoading();
 }

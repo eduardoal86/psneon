@@ -1,19 +1,27 @@
 package edualves.com.psneon.history.ui;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,27 +46,38 @@ import edualves.com.psneon.utils.Utils;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
-    @BindView(R.id.recycler_transfers)
-    RecyclerView recyclerView;
-
-    @BindView(R.id.bar_chart)
-    BarChart barChart;
-
     @Inject
     Service service;
 
     @Inject
     SharedPreferences prefs;
 
-    HistoryPresenter presenter;
+    @BindView(R.id.recycler_transfers)
+    RecyclerView recyclerView;
 
-    HistoryAdapter adapter;
+    @BindView(R.id.bar_chart)
+    BarChart barChart;
 
-    List<ContactInfoResponse> contacts = new ArrayList<>();
+    @BindView(R.id.empty_history)
+    RelativeLayout emptyScreen;
 
-    Map<ContactInfoResponse, Double> chartData = new HashMap<>();
+    @BindView(R.id.scroll_content)
+    ScrollView scrollContent;
 
-    List<BarEntry> barEntries = new ArrayList<>();
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    private TextView toolbarTitle;
+
+    private HistoryPresenter presenter;
+
+    private HistoryAdapter adapter;
+
+    private List<ContactInfoResponse> contacts = new ArrayList<>();
+
+    private Map<ContactInfoResponse, Double> chartData = new HashMap<>();
+
+    private List<BarEntry> barEntries = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -69,10 +88,28 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
         ButterKnife.bind(this);
 
-        //TODO display wait before these methods
+        configureToolbar();
+
         configListTransfer();
         setupListContacts();
         setupListTransfers();
+    }
+
+    private void configureToolbar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+        toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(R.string.history_money_sent);
+        toolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.regular_white));
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void setupListContacts() {
@@ -81,7 +118,9 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     }
 
     private void setupListTransfers() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(false);
     }
 
@@ -92,31 +131,26 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     }
 
     private void setupBarChart(List<ContactInfoResponse> contacts, List<TransferResponse> transfers) {
-        double amountId = 0;
 
-        //TODO Move this 'for' to presenter layer, returning just a map then populate the chart
-        for (int c = 0; c < contacts.size(); c++) {
-            for (int i = 0; i < transfers.size(); i++) {
-                if (contacts.get(c).getId() == transfers.get(i).getClienteId()) {
-                    amountId += transfers.get(i).getValor();
-                }
-            }
-            Log.d("Amount", "Amount by ID: " + contacts.get(c).getId() + " Total: " + amountId);
-            if (amountId > 0) {
-                chartData.put(contacts.get(c), amountId);
-            }
-            amountId = 0;
-        }
-        Log.d("Amount", "Map size " + chartData.size());
+        chartData = presenter.combineDataForChart(contacts, transfers);
 
         addBarEntries(chartData);
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "");
         barDataSet.setDrawValues(true);
-        barDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        barDataSet.setValueTextSize(10);
+        barDataSet.setValueTextColor(Color.rgb(48,131,123));
+        barDataSet.setForm(Legend.LegendForm.EMPTY);
+        barDataSet.setColor(Color.rgb(84,247,231));
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setDrawLabels(false);
+
+        YAxis yAxis = barChart.getAxisLeft();
+        yAxis.setDrawLabels(false);
 
         BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.05f);
+        barData.setBarWidth(0.03f);
 
         barChart.setData(barData);
         barChart.setFitBars(false);
@@ -126,12 +160,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
         barChart.setScaleEnabled(false);
         barChart.setTouchEnabled(false);
         barChart.getAxisRight().setEnabled(false);
-        barChart.getAxisLeft().setEnabled(true);
         barChart.getXAxis().setDrawAxisLine(false);
         barChart.getXAxis().setDrawGridLines(false);
-
-
-
+        barChart.getAxisLeft().setDrawTopYLabelEntry(false);
+        barChart.getAxisLeft().setDrawAxisLine(false);
         barChart.invalidate();
 
     }
@@ -148,10 +180,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
     @Override
     public void populateTransferList(List<TransferResponse> transferResponses) {
-        adapter = new HistoryAdapter(this, transferResponses);
-        adapter.setContactList(contacts);
-        recyclerView.setAdapter(adapter);
-        setupBarChart(contacts, transferResponses);
+        if (transferResponses.size() > 0) {
+            emptyScreen.setVisibility(View.GONE);
+            scrollContent.setVisibility(View.VISIBLE);
+
+            adapter = new HistoryAdapter(this, transferResponses);
+            adapter.setContactList(contacts);
+            recyclerView.setAdapter(adapter);
+            setupBarChart(contacts, transferResponses);
+        }
 
     }
 

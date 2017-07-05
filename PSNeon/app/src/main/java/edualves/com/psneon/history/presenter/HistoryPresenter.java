@@ -7,7 +7,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edualves.com.psneon.history.ui.HistoryView;
 import edualves.com.psneon.model.ContactInfoResponse;
@@ -48,7 +50,6 @@ public class HistoryPresenter {
 
             @Override
             public void onNext(List<TransferResponse> transferResponseList) {
-                //TODO call activity through view
                 view.populateTransferList(transferResponseList);
             }
         });
@@ -78,4 +79,28 @@ public class HistoryPresenter {
         }
 
     }
+
+    public Map<ContactInfoResponse, Double> combineDataForChart(List<ContactInfoResponse> contacts,
+                                                                List<TransferResponse> transfers) {
+
+        Map<ContactInfoResponse, Double> chartData = new HashMap<>();
+        double amountId = 0;
+
+        for (int c = 0; c < contacts.size(); c++) {
+            for (int i = 0; i < transfers.size(); i++) {
+                if (contacts.get(c).getId() == transfers.get(i).getClienteId()) {
+                    amountId += transfers.get(i).getValor();
+                }
+            }
+
+            if (amountId > 0) {
+                chartData.put(contacts.get(c), amountId);
+            }
+            amountId = 0;
+        }
+
+        return chartData;
+    }
+
+
 }
