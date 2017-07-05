@@ -11,4 +11,5 @@
     <string name="money_sent_confirmation">Dinheiro enviado!</string>
     <string name="money_sent_error_message">Ops! Tente novamente mais tarde.</string>
     <string name="empty_history">Histórico vazio...\nQue tal transferir para\num amigo e voltar depois? ;)</string>
+    <string name="currency">R$ %1$s</string>
 </resources>

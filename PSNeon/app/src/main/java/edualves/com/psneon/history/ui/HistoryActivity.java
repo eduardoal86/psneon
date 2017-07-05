@@ -90,7 +90,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
         configureToolbar();
 
-        //TODO display wait before these methods
         configListTransfer();
         setupListContacts();
         setupListTransfers();

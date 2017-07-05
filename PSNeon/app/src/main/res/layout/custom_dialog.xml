@@ -87,7 +87,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/edittext_shape_white"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:maxLength="15"
                     android:textAlignment="center"
                     android:textColor="@color/light_blue"

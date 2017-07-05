@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import edualves.com.psneon.R;
@@ -58,7 +59,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         }
 
-        holder.transferValue.setText(transferList.get(position).getValor().toString());
+        String valueFormat = String.format("%.2f", transferList.get(position).getValor());
+
+        String currency = String.format(context.getString(R.string.currency),
+                valueFormat);
+
+        holder.transferValue.setText(currency);
 
     }
 
