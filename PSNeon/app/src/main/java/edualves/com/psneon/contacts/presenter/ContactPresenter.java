@@ -55,6 +55,8 @@ public class ContactPresenter {
 
     public void transferMoney(TransferCommand transferCommand) {
 
+        view.showLoading();
+
         Observable subcription = service.sendMoney(transferCommand);
 
         subcription.subscribe(new Subscriber<Boolean>() {
@@ -65,11 +67,13 @@ public class ContactPresenter {
 
             @Override
             public void onError(Throwable e) {
+                view.hideLoading();
                 view.displayErrorTransferMessage(e.getMessage());
             }
 
             @Override
             public void onNext(Boolean statusTransfer) {
+                view.hideLoading();
                 view.displaySuccessTransferMessage();
             }
         });

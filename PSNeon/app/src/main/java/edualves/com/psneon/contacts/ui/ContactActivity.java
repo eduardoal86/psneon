@@ -1,5 +1,6 @@
 package edualves.com.psneon.contacts.ui;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import edualves.com.psneon.BaseApp;
 import edualves.com.psneon.R;
 import edualves.com.psneon.contacts.presenter.ContactPresenter;
 import edualves.com.psneon.contacts.ui.dialog.CustomDialog;
+import edualves.com.psneon.contacts.ui.dialog.CustomLoadingDialog;
 import edualves.com.psneon.main.ui.MainActivity;
 import edualves.com.psneon.model.ContactInfoResponse;
 import edualves.com.psneon.model.TransferCommand;
@@ -56,7 +58,8 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
 
     List<ContactInfoResponse> contactList = new ArrayList<>();
 
-    CustomDialog cashDialog;
+    private CustomDialog cashDialog;
+    private CustomLoadingDialog loadingDialog;
 
     TransferCommand transferCommand = new TransferCommand();
 
@@ -146,8 +149,7 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
         Toast.makeText(ContactActivity.this,
                 R.string.money_sent_confirmation,
                 Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        backToMainScreen();
     }
 
     @Override
@@ -156,6 +158,30 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
         Toast.makeText(ContactActivity.this,
                 R.string.money_sent_error_message,
                 Toast.LENGTH_SHORT).show();
+        backToMainScreen();
+    }
+
+    private void backToMainScreen() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showLoading() {
+        loadingDialog = new CustomLoadingDialog.Builder()
+                .withMessage(getString(R.string.loading_message))
+                .build();
+
+        loadingDialog.setStyle(DialogFragment.STYLE_NO_TITLE,
+                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        loadingDialog.show(getSupportFragmentManager(), "loading");
+    }
+
+    @Override
+    public void hideLoading() {
+        if (loadingDialog != null && loadingDialog.isResumed()) {
+            loadingDialog.dismiss();
+        }
     }
 
     @Override
