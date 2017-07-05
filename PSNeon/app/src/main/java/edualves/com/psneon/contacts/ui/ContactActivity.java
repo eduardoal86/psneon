@@ -38,30 +38,31 @@ public class ContactActivity extends AppCompatActivity implements ContactView, C
 
     private static final String LOG_TAG = ContactActivity.class.getSimpleName();
 
-    @BindView(R.id.recycler_contact)
-    RecyclerView recyclerList;
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
-    ContactAdapter adapter;
-
-    ContactPresenter presenter;
-
     @Inject
     Service service;
 
     @Inject
     SharedPreferences prefs;
 
+    @BindView(R.id.recycler_contact)
+    RecyclerView recyclerList;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    private ContactAdapter adapter;
+
+    private ContactPresenter presenter;
+
     private TextView toolbarTitle;
 
-    List<ContactInfoResponse> contactList = new ArrayList<>();
+    private List<ContactInfoResponse> contactList = new ArrayList<>();
 
     private CustomDialog cashDialog;
+
     private CustomLoadingDialog loadingDialog;
 
-    TransferCommand transferCommand = new TransferCommand();
+    private TransferCommand transferCommand = new TransferCommand();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

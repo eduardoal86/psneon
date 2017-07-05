@@ -46,6 +46,12 @@ import edualves.com.psneon.utils.Utils;
 
 public class HistoryActivity extends AppCompatActivity implements HistoryView{
 
+    @Inject
+    Service service;
+
+    @Inject
+    SharedPreferences prefs;
+
     @BindView(R.id.recycler_transfers)
     RecyclerView recyclerView;
 
@@ -58,26 +64,20 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
     @BindView(R.id.scroll_content)
     ScrollView scrollContent;
 
-    @Inject
-    Service service;
-
-    @Inject
-    SharedPreferences prefs;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     private TextView toolbarTitle;
 
-    HistoryPresenter presenter;
+    private HistoryPresenter presenter;
 
-    HistoryAdapter adapter;
+    private HistoryAdapter adapter;
 
-    List<ContactInfoResponse> contacts = new ArrayList<>();
+    private List<ContactInfoResponse> contacts = new ArrayList<>();
 
-    Map<ContactInfoResponse, Double> chartData = new HashMap<>();
+    private Map<ContactInfoResponse, Double> chartData = new HashMap<>();
 
-    List<BarEntry> barEntries = new ArrayList<>();
+    private List<BarEntry> barEntries = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -160,7 +160,6 @@ public class HistoryActivity extends AppCompatActivity implements HistoryView{
         barChart.setScaleEnabled(false);
         barChart.setTouchEnabled(false);
         barChart.getAxisRight().setEnabled(false);
-        barChart.getAxisLeft().setEnabled(true);
         barChart.getXAxis().setDrawAxisLine(false);
         barChart.getXAxis().setDrawGridLines(false);
         barChart.getAxisLeft().setDrawTopYLabelEntry(false);

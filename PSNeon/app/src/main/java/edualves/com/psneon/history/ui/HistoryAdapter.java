@@ -61,8 +61,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         String valueFormat = String.format("%.2f", transferList.get(position).getValor());
 
-        String currency = String.format(context.getString(R.string.currency),
-                valueFormat);
+        String currency = String.format(context.getString(R.string.currency), valueFormat);
 
         holder.transferValue.setText(currency);
 

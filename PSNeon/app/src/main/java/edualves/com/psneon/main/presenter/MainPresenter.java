@@ -18,15 +18,12 @@ public class MainPresenter {
 
     private final MainView view;
 
-    private CompositeSubscription subscriptions;
-
     private final String LOG_TAG = MainPresenter.class.getSimpleName();
 
     public MainPresenter(Service service, MainView mainView) {
 
         this.service = service;
         this.view = mainView;
-        this.subscriptions = new CompositeSubscription();
     }
 
     public void getUserToken(String userName, String userEmail) {

@@ -27,6 +27,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    @Inject
+    Service service;
+
+    @Inject
+    SharedPreferences prefs;
+
     @BindView(R.id.user_name)
     TextView userName;
 
@@ -36,13 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.profile_photo)
     CircleImageView userPhoto;
 
-    MainPresenter presenter;
-
-    @Inject
-    Service service;
-
-    @Inject
-    SharedPreferences prefs;
+    private MainPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
